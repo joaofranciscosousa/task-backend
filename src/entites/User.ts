@@ -17,12 +17,4 @@ export class User {
 
   @OneToMany(() => Task, (task) => task.user)
   task: Task[];
-
-  // @BeforeInsert()
-  // setPassword() {
-  //   console.log("****************");
-  //   const salt = bcrypt.genSaltSync(10);
-  //   const hash = bcrypt.hashSync(this.password, salt);
-  //   this.password = "hash";
-  // }
 }

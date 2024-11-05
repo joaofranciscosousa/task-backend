@@ -15,11 +15,6 @@ async function tokenAuthorization(req: Req, res: Response, next: NextFunction) {
   // verify has token
   if (!token) {
     return res.status(401).send("Não autorizado");
-    // return returnServerError({
-    //   res,
-    //   error: { message: 'Acesso negado!' },
-    //   status: 401,
-    // });
   }
 
   try {
@@ -30,7 +25,6 @@ async function tokenAuthorization(req: Req, res: Response, next: NextFunction) {
 
     next();
   } catch (err) {
-    console.log("errrr", err);
     return res.status(401).send("Não autorizado");
   }
 }

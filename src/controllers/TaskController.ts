@@ -4,8 +4,6 @@ import { AppDataSource } from "../data-source";
 import tokenAuthorization from "../middlewares/token_authorization";
 import { IsNull, LessThanOrEqual, Not } from "typeorm";
 import { createTaskSchema } from "../helper/validation/task";
-import zodErrorHandler from "../middlewares/ZodErrors";
-import errorHandler from "../middlewares/errorHandler";
 
 interface Req extends Request {
   currentUser: {
@@ -31,8 +29,6 @@ export default (app: Express) => {
           const teste: any = date;
           filterDate = new Date(teste);
         }
-
-        console.log("filterDate", filterDate);
 
         let filterObject = {
           user: req.currentUser.id,
@@ -78,12 +74,11 @@ export default (app: Express) => {
   );
 
   app.put(
-    NAMESPACE + "/:id", //Update task to done
+    NAMESPACE + "/:id", // Update task to done
     tokenAuthorization,
     async (req: Req, res: Response, next: NextFunction) => {
       try {
         const { id } = req.params;
-        // const { description } = createTaskSchema.parse(req.body);
 
         const task = await taskRepository.findOne({
           where: {
@@ -108,17 +103,7 @@ export default (app: Express) => {
       try {
         const { id } = req.params;
 
-        const task = await taskRepository.delete(id);
-
-        // const tasks = await taskRepository.delete({
-        //   // where: {
-        //   id: Number(id),
-        //   user: req.currentUser.id,
-
-        //   // },
-        // });
-
-        console.log("taskkk", task);
+        await taskRepository.delete(id);
 
         res.status(200).send("Deletado com sucesso");
       } catch (error: any) {
@@ -126,7 +111,4 @@ export default (app: Express) => {
       }
     }
   );
-
-  app.use(zodErrorHandler);
-  app.use(errorHandler);
 };

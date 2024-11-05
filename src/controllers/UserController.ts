@@ -4,8 +4,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { AppDataSource } from "../data-source";
 import tokenAuthorization from "../middlewares/token_authorization";
-import zodErrorHandler from "../middlewares/ZodErrors";
-import errorHandler from "../middlewares/errorHandler";
 import { createUserSchema, loginUserSchema } from "../helper/validation/user";
 
 export default (app: Express) => {
@@ -73,7 +71,7 @@ export default (app: Express) => {
 
         res.status(200).send({
           token: jwt.sign(payload, process.env.AUTH_SECRET, {
-            expiresIn: 100000000,
+            expiresIn: 1800,
           }),
           name: users.name,
           email: users.email,
@@ -83,7 +81,4 @@ export default (app: Express) => {
       }
     }
   );
-
-  app.use(zodErrorHandler);
-  app.use(errorHandler);
 };
